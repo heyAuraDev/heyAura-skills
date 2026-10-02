@@ -35,7 +35,7 @@ See the [skill instructions](skills/heyaura/SKILL.md) for the payment workflow a
 
 The [publishing workflow](.github/workflows/publish-clawhub.yml) uploads `skills/heyaura` when a stable GitHub release is published. Branch pushes and prereleases do not publish to ClawHub.
 
-The workflow publishes to ClawHub as `@heyaura/heyaura`. Before the first release under this slug, rename the existing listing with `clawhub skill rename @heyaura/heyaura-portfolio heyaura` to preserve its version history and redirect the old slug.
+The workflow publishes to ClawHub as `@heyaura/heyaura`. The previous slug, `heyaura-portfolio`, redirects to this listing, preserving its version history and existing links.
 
 Before the first release:
 
