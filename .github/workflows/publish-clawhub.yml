@@ -1,0 +1,58 @@
+name: Publish to ClawHub
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: clawhub-heyaura-portfolio
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Check release version and publishing configuration
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+          CLAWHUB_OWNER: ${{ vars.CLAWHUB_OWNER }}
+        run: |
+          VERSION="$(node -p 'require("./skills/heyaura-portfolio/package.json").version')"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Expected a stable version in package.json"; exit 1; }
+          [[ "$RELEASE_TAG" == "v$VERSION" ]] || { echo "Release tag must be v$VERSION"; exit 1; }
+          [[ -n "$CLAWHUB_TOKEN" ]] || { echo "Set the CLAWHUB_TOKEN repository secret"; exit 1; }
+          [[ -n "$CLAWHUB_OWNER" ]] || { echo "Set the CLAWHUB_OWNER repository variable"; exit 1; }
+          echo "SKILL_VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Install ClawHub CLI
+        run: npm install --global --ignore-scripts clawhub@0.23.3
+
+      - name: Publish heyAura Portfolio
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+          CLAWHUB_OWNER: ${{ vars.CLAWHUB_OWNER }}
+          RELEASE_NOTES: ${{ github.event.release.body }}
+        run: |
+          clawhub login --token "$CLAWHUB_TOKEN" --no-browser
+          clawhub --no-input skill publish skills/heyaura-portfolio \
+            --slug heyaura-portfolio \
+            --name "heyAura Portfolio" \
+            --owner "$CLAWHUB_OWNER" \
+            --version "$SKILL_VERSION" \
+            --changelog "$RELEASE_NOTES" \
+            --categories finance,integrations \
+            --topics portfolio,evm,x402

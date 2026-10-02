@@ -1,6 +1,15 @@
 ---
 name: heyaura-portfolio
 description: Fetch and summarize a current multichain EVM wallet portfolio through heyAura's paid x402 API, including token balances, USD values, networks, and DeFi positions. Use when a user asks to inspect a wallet address or ENS name, list its crypto holdings, calculate its portfolio value, show balances by chain, or explicitly use the heyAura portfolio API or x402 portfolio endpoint. Do not use for portfolio strategies, trade execution, swaps, transfers, or generic market-price research.
+metadata:
+  openclaw:
+    requires:
+      bins: [node, npm]
+    primaryEnv: HEYAURA_EVM_PRIVATE_KEY
+    envVars:
+      - name: HEYAURA_EVM_PRIVATE_KEY
+        required: false
+        description: EVM payer private key, required only for paid requests; unpaid inspection works without it.
 ---
 
 # heyAura Portfolio
