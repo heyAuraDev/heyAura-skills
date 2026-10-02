@@ -1,0 +1,30 @@
+name: Rename heyAura on ClawHub
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: clawhub-heyaura
+  cancel-in-progress: false
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install ClawHub CLI
+        run: npm install --global --ignore-scripts clawhub@0.23.3
+
+      - name: Rename the existing heyAura skill
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+        run: |
+          clawhub login --token "$CLAWHUB_TOKEN" --no-browser
+          clawhub --no-input skill rename @heyaura/heyaura-portfolio heyaura --yes
