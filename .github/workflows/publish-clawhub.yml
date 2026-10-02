@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: clawhub-heyaura-portfolio
+  group: clawhub-heyaura
   cancel-in-progress: false
 
 jobs:
@@ -49,7 +49,7 @@ jobs:
         run: |
           clawhub login --token "$CLAWHUB_TOKEN" --no-browser
           clawhub --no-input skill publish skills/heyaura \
-            --slug heyaura-portfolio \
+            --slug heyaura \
             --name "heyAura" \
             --owner "$CLAWHUB_OWNER" \
             --version "$SKILL_VERSION" \

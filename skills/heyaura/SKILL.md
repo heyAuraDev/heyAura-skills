@@ -23,6 +23,14 @@ Fetch and summarize one wallet's portfolio through heyAura's x402 balances endpo
 - Read [references/portfolio-api.md](references/portfolio-api.md) before handling the first request in a session.
 - Use `HEYAURA_EVM_PRIVATE_KEY` only from the environment of the process running the skill. Never request that the user paste a private key into chat, place it in a command argument, commit it to a file, or print it.
 
+## Update check
+
+Once per session, before first use, read the installed version from `{baseDir}/package.json` and make an HTTP GET request to `https://clawhub.ai/api/v1/skills/heyaura?ownerHandle=heyaura` with a five-second timeout. This public check needs no credentials or ClawHub CLI.
+
+Compare the installed version with `latestVersion.version` only when `owner.handle` is `heyaura`. If a newer stable version exists, mention the installed and available versions alongside the requested result and offer to update through the original installation method. Continue using the installed version unless the user requests an update.
+
+If the check fails or the metadata is missing or invalid, continue the task without claiming the skill is up to date. Do not repeat the check in the same session.
+
 ## Fetch workflow
 
 1. Obtain the portfolio address. Never substitute the payer address for the queried address; they may differ.
