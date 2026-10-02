@@ -37,8 +37,6 @@ See the [skill instructions](skills/heyaura-portfolio/SKILL.md) for the payment 
 skills/
   heyaura-portfolio/
     SKILL.md
-    agents/openai.yaml
-    assets/icon.svg
     package.json
     package-lock.json
     references/portfolio-api.md
