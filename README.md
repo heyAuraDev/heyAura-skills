@@ -31,21 +31,6 @@ Inspection does not require a private key and does not sign or pay. It returns t
 
 See the [skill instructions](skills/heyaura/SKILL.md) for the payment workflow and the [API reference](skills/heyaura/references/portfolio-api.md) for endpoint and response details.
 
-## Publish to ClawHub
-
-The [publishing workflow](.github/workflows/publish-clawhub.yml) uploads `skills/heyaura` when a stable GitHub release is published. Branch pushes and prereleases do not publish to ClawHub.
-
-The workflow publishes to ClawHub as `@heyaura/heyaura`. The previous slug, `heyaura-portfolio`, redirects to this listing, preserving its version history and existing links.
-
-Before the first release:
-
-1. Choose the ClawHub account or organization that will own the skill and create a publishing token with access to it.
-2. Add the token as the GitHub Actions repository secret `CLAWHUB_TOKEN`. Set the repository variable `CLAWHUB_OWNER` to the ClawHub owner handle.
-3. Review ClawHub's [MIT-0 publishing terms](https://github.com/openclaw/clawhub/blob/main/docs/skill-format.md#license). Publishing makes the skill bundle free to use, modify, and redistribute without attribution; heyAura API requests still use paid x402.
-4. Publish a GitHub release from the intended commit with a tag matching the skill's `package.json` version, initially `v1.0.0`. The workflow sends that version and the release notes to ClawHub.
-
-For later releases, update `skills/heyaura/package.json` and its lockfile version together, commit the changes, and publish the matching `vX.Y.Z` release. Check the Actions run and the ClawHub listing after publishing; an upload can remain under review before it becomes publicly installable.
-
 ## Repository layout
 
 ```text
